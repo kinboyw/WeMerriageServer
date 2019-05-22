@@ -1,0 +1,570 @@
+<!Doctype html>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>提交资料</title>
+<meta name="Keywords" content="">
+<meta name="Description" content="">
+<meta name="renderer" content="webkit" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/layui/css/layui.css">
+<script type="text/javascript" src="/layui/layui.js"></script>
+</head>
+<body onload="init()">
+<style type="text/css">
+body{background:url('/img/flowers-bottom.png') no-repeat center bottom #F4F6F9;background-size:100% auto;}	
+.site-title{margin-bottom:20px;}
+.site-title fieldset{border: none; padding: 0; border-top: 1px solid #eee;}
+.site-title fieldset legend{margin-left: 20px;  padding: 0 10px; font-size: 20px; font-weight: 300;font-family:'Microsoft YaHei';}
+#logsta a#face_user img{vertical-align:top;}
+#container{width:960px;}
+.box{width:960px;padding:20px;margin:0 auto;margin-top:30px;margin-bottom:30px;box-shadow: 0 10px 60px 0 rgba(29, 29, 31, 0.09);background-color:#fff;}
+#preview .img{margin-right:10px;margin-bottom:10px;position:relative;float:left;width:100px;height:160px;}
+#map{width:660px;height:400px;border:1px solid #e6e6e6}
+.letter{width:300px;padding-top:50px;margin:0 auto;margin-bottom:50px;}
+.del{position:absolute;top:0;right:0;display:block;cursor:pointer;width:40px;height:20px;line-height:20px;background-color:rgba(0,0,0,.3);text-align:center;color:#fff;}
+.footer{text-align:center;color:#333;line-height:60px;margin-bottom:150px;font-family:'Microsoft YaHei';}
+.my{width:200px;height:80px;position:fixed;top:20px;left:160px;text-align:left;z-index:9999}
+.home{width:200px;height:80px;position:fixed;top:20px;left:20px;text-align:left;z-index:9999}
+.layui-elem-quote b{color:#5FB878}
+</style>
+<div class="my">
+	<a href="javascript:edit()" class="layui-btn layui-btn-normal"><i class="layui-icon">&#xe642;</i> 修改我的信息</a>
+</div>
+<div class="home">
+	<a href="/" class="layui-btn layui-btn-normal"><i class="layui-icon">&#xe68e;</i> 返回官网</a>
+</div>
+<div class="letter">
+	<img src="/img/ourwedding.gif" width="100%"/>
+</div>
+
+
+<form class="layui-form" action="">
+<div class="box">
+	<div class="site-title">
+		<fieldset><legend><a name="use">填写激活码</a></legend></fieldset>
+	</div>
+	<blockquote class="layui-elem-quote layui-quote-nm">注：激活码需额外购买</blockquote>
+	<div class="layui-form-item">
+		<label class="layui-form-label">激活码</label>
+		<div class="layui-input-inline">
+		  <input type="text" name="code"  value="" required  lay-verify="all"  autocomplete="off" placeholder="填写您的激活码" class="layui-input">
+		</div>		
+		<div class="layui-input-inline" style="width:580px">
+		  <!-- <a href="javascript:zan()" class="layui-btn layui-btn-warm">微信扫码支持开发者</a> -->
+		  <a href="javascript:show_wx()" class="layui-btn layui-btn-primary">微信支付</a>
+		  <a href="javascript:show_al()" class="layui-btn layui-btn-primary">支付宝支付</a>
+		<a href="https://item.taobao.com/item.htm?spm=a1z38n.10677092.0.0.1f2c7680U5EIZU&id=563371556431" target="_blank" class="layui-btn layui-btn-primary">淘宝购买</a>
+		  <a href="http://wpa.qq.com/msgrd?v=3&uin=290805404&site=qq&Menu=yes" target="_blank" class="layui-btn layui-btn-primary">支付完成点此索取激活码</a>
+		</div>	 
+	</div>
+</div>
+<div class="box">
+	<div class="site-title">
+		<fieldset><legend><a name="use">小程序信息</a></legend></fieldset>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">小程序名</label>
+			<div class="layui-input-inline">
+				<input type="text" name="app_name" value="" required  lay-verify="all"  autocomplete="off" placeholder="填写您申请的小程序名称" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">Appid</label>
+			<div class="layui-input-inline">
+				<input type="text" name="appid" value=""  required  lay-verify="all"  autocomplete="off" placeholder="填写您申请的小程序appid" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">小程序码</label>
+			<div class="layui-input-block">
+				<input type="hidden" name="qrimg" value="" class="layui-input layui-input-inline" id="qrimg_url">
+				<button type="button" class="layui-btn layui-btn-primary" id="qrimg_btn">
+					<i class="layui-icon">&#xe608;</i>上传小程序二维码 
+				</button>
+				<div class="layui-upload-list" id="qrimg" >
+									</div>
+			</div>				
+		</div>
+	</div>
+</div>
+<div class="box">
+	<div class="site-title">
+		<fieldset><legend><a name="use">填写基础信息</a></legend></fieldset>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">新郎姓名</label>
+			<div class="layui-input-inline">
+				<input type="text" name="he" value="" lay-verify="all" autocomplete="off"  placeholder="填写新郎姓名" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">新娘姓名</label>
+			<div class="layui-input-inline">
+				<input type="text" name="she" value="" lay-verify="all" autocomplete="off"  placeholder="填写新娘姓名"  class="layui-input">
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">新郎电话</label>
+			<div class="layui-input-inline">
+				<input type="text" name="he_tel" value="" lay-verify="all" autocomplete="off"  placeholder="填写新郎电话"  class="layui-input">
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">新娘电话</label>
+			<div class="layui-input-inline">
+				<input type="text" name="she_tel" value="" lay-verify="all" autocomplete="off"  placeholder="填写新娘电话"  class="layui-input">
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">婚礼日期</label>
+			<div class="layui-input-inline">
+				<input type="text" name="date" value="" lay-verify="all" autocomplete="off"  placeholder="如:2018年8月8日 星期天"  class="layui-input">
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">农历日期</label>
+			<div class="layui-input-inline">
+				<input type="text" name="lunar" value="" lay-verify="all" autocomplete="off"  placeholder="如:正月初七"  class="layui-input">
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">背景音乐</label>
+		<div class="layui-input-block">
+			<select name="music" lay-filter="music">
+				<option value="">请选择</option>
+								<option value="1" >I Do - 莫文蔚</option>
+								<option value="2" >给你们 - 张宇</option>
+								<option value="4" >A Thousand Years</option>
+								<option value="5" >Beautiful In White - Westlife</option>
+								<option value="6" >非酋 - 薛明媛 / 朱贺</option>
+								<option value="7" >告白气球 - 周杰伦</option>
+								<option value="8" >Knee Deep In My Heart - Westlife</option>
+								<option value="10" >终于等到你 - 张靓颖</option>
+								<option value="11" >Marry You - Bruno Mars</option>
+								<option value="12" >甜甜的 - 周杰伦</option>
+								<option value="13" >等你下课 - 周杰伦</option>
+								<option value="14" >Permanent  - Kygo/JHart</option>
+								<option value="15" >星晴 - 周杰伦</option>
+								<option value="16" >爱上夏天 - 任贤齐/舒淇</option>
+								<option value="18" >小永远 - 何洁</option>
+								<option value="19" >你是我最重要的决定</option>
+								<option value="20" >Valentine</option>
+								<option value="21" >梁静茹 - 小手拉大手</option>
+								<option value="22" >Perfect - Ed Sheeran</option>
+								<option value="23" >最美的期待</option>
+								<option value="24" >刚好遇见你</option>
+								<option value="25" >广东爱情故事</option>
+								<option value="26" >纸短情长</option>
+								<option value="27" >水木年华 - 一生有你
+</option>
+								<option value="28" >星球坠落 - JelloRio李佳隆/艾热</option>
+								<option value="29" >往后余生 - 王贰浪</option>
+								<option value="30" >my heart belongs to you</option>
+								<option value="31" >sku ha gaet Hjem-Sys Bjerre</option>
+							</select>
+		</div>
+	</div>
+</div>
+<div class="box">
+<div class="site-title">
+		<fieldset><legend><a name="use">上传相册</a></legend></fieldset>
+	</div>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label">形象图片</label>
+		<div class="layui-input-block">
+			<input type="hidden" name="cover" value="" class="layui-input layui-input-inline" id="cover_url">
+			<button type="button" class="layui-btn layui-btn-primary" id="cover_btn">
+				<i class="layui-icon">&#xe608;</i>上传首屏形象图片 尺寸800×1200
+			</button>
+			<div class="layui-upload-list" id="cover" >
+							</div>
+		</div>				
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">婚礼图集</label>
+		<div class="layui-input-block" id="photos">
+					<button type="button" class="layui-btn layui-btn-primary" id="photo">
+				<i class="layui-icon">&#xe608;</i>上传婚纱相册图集 尺寸800×1200
+			</button>
+			<div class="layui-upload-list" id="preview" >
+						</div>
+			<div style="clear:both"></div>
+			<br/>
+			<p style="color:#999">小提示：为保证最佳显示效果，建议上传竖版图片 建议不超过10张图片 单张图片大小不超过500KB。</p>
+		</div>				
+	</div>
+</div>
+<div class="box">
+
+	<div class="site-title">
+		<fieldset><legend><a name="use">酒店信息</a></legend></fieldset>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">酒店名称</label>
+		<div class="layui-input-inline">
+		  <input type="text" name="hotel"  value="" required  lay-verify="all"  autocomplete="off" placeholder="填写酒店名称" class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">酒店地址</label>
+		<div class="layui-input-block">
+		  <input type="text" name="address"  value="" id="address" required  lay-verify="all"  autocomplete="off" placeholder="填写详细的酒店地址" class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">酒店坐标</label>
+		<div class="layui-inline" style="width:230px;">		
+			<div class="layui-input-inline">		  
+			  <a href="javascript:codeAddress()" class="layui-btn layui-btn-primary">搜索后点击地图标注位置</a>
+			</div>
+		</div>
+		<div class="layui-inline" style="width:200px;">
+			<div class="layui-input-inline">
+				<input type="text" name="lat" value="" id="lat" lay-verify="all" autocomplete="off" placeholder="经度坐标 点击地图自动获取"  class="layui-input">
+			</div>
+		</div>
+		<div class="layui-inline" style="width:200px;">
+			<div class="layui-input-inline">
+				<input type="text" name="lng" value="" id="lng" lay-verify="all" autocomplete="off" placeholder="纬度坐标 点击地图自动获取" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-input-block">
+			<div id="map"></div>
+		</div>
+	</div>
+</div>
+<div class="box">
+	<div class="site-title">
+		<fieldset><legend><a name="use">分享设置</a></legend></fieldset>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">分享图片</label>
+		<div class="layui-input-block">
+			<input type="hidden" name="thumb" value="" class="layui-input layui-input-inline" id="thumb_url">
+			<button type="button" class="layui-btn layui-btn-primary" id="thumb_btn">
+				<i class="layui-icon">&#xe608;</i>上传分享图 尺寸500×400
+			</button>
+			<div class="layui-upload-list" id="thumb" >
+							</div>
+		</div>				
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">分享文字</label>
+		<div class="layui-input-block">
+		  <input type="text" name="share" value=""  required  lay-verify="all"  autocomplete="off" placeholder="分享文字，建议不超过20个字" class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-input-block">
+			<button class="layui-btn layui-btn-lg" id="sendbtn" lay-submit="" lay-filter="apply">立即提交</button>
+		</div>
+	</div>
+</div>
+</form>
+	
+<div id="sign_log" class="box">	
+	<div class="site-title">
+		<fieldset><legend><a name="use">出席信息管理</a></legend></fieldset>
+	</div>
+	<div class="layui-form">
+		<table class="layui-table">
+			<thead>
+				<tr>
+					<th width="120">微信用户</th>
+					<th width="100">姓名</th>
+					<th width="200">电话</th>
+					<th width="300">出席人数</th>
+					<th width="300">留言</th>
+					<th width="180">时间</th>
+				</tr> 
+			</thead>
+			<tbody>
+				</tbody>
+		</table>
+	</div>
+</div>
+<div id="comment" class="box">	
+	<div class="site-title">
+		<fieldset><legend><a name="use">留言管理</a></legend></fieldset>
+	</div>
+	<div class="layui-form">
+		<table class="layui-table">
+			<thead>
+				<tr>
+					<th width="60">微信用户</th>
+					<th width="300">留言</th>
+					<th width="180">时间</th>
+					<th width="80">操作</th>
+				</tr> 
+			</thead>
+			<tbody>
+				</tbody>
+		</table>
+	</div>
+	<script type="text/javascript">
+	function del_pl(id){
+		$.ajax({
+			type:'post',
+			url:'/pub.html?c=delcmt',
+			data:{'id':id},
+			success:function(r){
+				if(r=='ok'){
+					layer.msg('评论删除成功！');
+				}else{
+					layer.msg(r);
+				}
+				setTimeout(function(){window.location.reload(true);},1200);
+			}
+		});
+	}
+	</script>
+</div>
+
+
+
+
+<div class="footer">2019 &copy; Qiaker.cn 鲁ICP备16031483号 Made with love </div>
+<script type="text/javascript">
+function del(id) {
+	$('#img_'+id).remove();
+	$('#ipt_'+id).remove();
+	$.ajax({
+		type:'post',
+		url:'/pub.html?c=delphoto',
+		data:{'id':id},
+		success:function(r){
+			if(r=='ok'){
+				layer.msg('删除成功');
+			}else{
+				alert(r);
+			}
+		}
+	});
+}
+
+function show_wx(){
+	layer.open({
+		type: 1,
+		title: false,
+		closeBtn: 0,
+		anim: 2,
+		offset: '150px',
+		shadeClose: true,
+		content: '<img src="http://img.qiaker.cn/1549951969243.jpg" width="300px">'
+	});
+}
+function edit(){
+	layer.prompt({title: '输入您的小程序Appid', formType: 0}, function(pass, index){
+		window.location.href='/pub.html?appid='+pass;
+	});
+}
+function zan(){
+	layer.open({
+		type: 1,
+		title: false,
+		closeBtn: 0,
+		anim: 2,
+		offset: '150px',
+		shadeClose: true,
+		content: '<img src="https://wx.qiaker.cn/img/wxzan.jpg" width="300px">'
+	});
+}
+
+function show_al(){
+	layer.open({
+		type: 1,
+		title: false,
+		closeBtn: 0,
+		anim: 2,
+		offset: '150px',
+		shadeClose: true,
+		content: '<img src="http://img.qiaker.cn/154995217839.jpg" width="300px">'
+	});
+}
+</script>
+
+
+<script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp&key=BVPBZ-UFSWO-QKJW3-SAIK2-ZL5BZ-JAFFK"></script>
+<script>
+var citylocation,map,marker = null;
+var init = function() {
+    var center = new qq.maps.LatLng(39.916527,116.397128);
+    map = new qq.maps.Map(document.getElementById('map'),{
+        center: center,
+        zoom: 17
+    });
+
+	geocoder = new qq.maps.Geocoder({
+        complete : function(result){
+			console.log(result); 
+            map.setCenter(result.detail.location);
+        }
+    });
+
+	var marker = new qq.maps.Marker({
+        position: center,
+        map: map
+    });
+	
+	qq.maps.event.addListener(map, 'click', function(event) {
+		// console.log(event.latLng)
+		$('#lat').val(event.latLng.lat);
+		$('#lng').val(event.latLng.lng);
+		var marker=new qq.maps.Marker({
+            position:event.latLng, 
+            map:map
+        });    
+		qq.maps.event.addListener(map, 'click', function(event) {
+            marker.setMap(null);      
+		});
+    });
+
+
+    //获取城市列表接口设置中心点
+    citylocation = new qq.maps.CityService({
+        complete : function(result){
+            map.setCenter(result.detail.latLng);
+        }
+    });
+	    //调用searchLocalCity();方法    根据用户IP查询城市信息。
+    citylocation.searchLocalCity();
+	
+
+	
+
+}
+
+
+function codeAddress() {
+	var address = document.getElementById("address").value;
+	console.log(address);
+	if(address.length<1){
+		layer.msg('请先填写详细的酒店地址后再搜索！');
+		return;
+	}
+	//通过getLocation();方法获取位置信息值
+	geocoder.getLocation(address);
+}
+</script>
+
+<script>
+layui.use(['form', 'layedit', 'laydate', 'upload'], function(){
+    var form = layui.form
+            ,layer = layui.layer
+            ,layedit = layui.layedit
+            ,laydate = layui.laydate
+            ,upload = layui.upload;
+
+    //执行实例
+    var uploadInst = upload.render({
+        elem: '#photo' //绑定元素
+        ,url: '/upload.html' //上传接口
+        ,done: function(res){
+            if (res.code == 0) {				
+                $('#preview').append('<div class="img"><img src="'+res.data.src+'" class="layui-upload-img" width="100px"></div>');
+                $('#photos').append('<input type="hidden" name="photo[]" value="'+res.data.src+'">');
+                layer.msg(res.msg);
+            } else {                   
+                layer.msg(res.msg);
+            }
+        }
+        ,error: function(){
+        //请求异常回调
+        }
+    });
+	
+    var uploadInst = upload.render({
+        elem: '#thumb_btn' //绑定元素
+        ,url: '/upload.html' //上传接口
+        ,done: function(res){
+            if (res.code == 0) {
+                $('#thumb_url').val(res.data.src);
+                $('#thumb').html('<img src="'+res.data.src+'" class="layui-upload-img" width="200px">');
+                layer.msg(res.msg);
+            } else {                   
+                layer.msg(res.msg);
+            }
+        }
+        ,error: function(){
+        //请求异常回调
+        }
+    });
+
+	
+    var uploadInst = upload.render({
+        elem: '#qrimg_btn' //绑定元素
+        ,url: '/upload.html' //上传接口
+        ,done: function(res){
+            if (res.code == 0) {
+                $('#qrimg_url').val(res.data.src);
+                $('#qrimg').html('<img src="'+res.data.src+'" class="layui-upload-img" width="200px">');
+                layer.msg(res.msg);
+            } else {                   
+                layer.msg(res.msg);
+            }
+        }
+        ,error: function(){
+        //请求异常回调
+        }
+    });
+	var uploadInst = upload.render({
+        elem: '#cover_btn' //绑定元素
+        ,url: '/upload.html' //上传接口
+        ,done: function(res){
+            if (res.code == 0) {
+                $('#cover_url').val(res.data.src);
+                $('#cover').html('<img src="'+res.data.src+'" class="layui-upload-img" width="200px">');
+                layer.msg(res.msg);
+            } else {                   
+                layer.msg(res.msg);
+            }
+        }
+        ,error: function(){
+        //请求异常回调
+        }
+    });
+
+	form.verify({
+		all: function(value){
+		  if(value.length < 1){
+			return '必填项不能为空！';
+		  }
+		}
+	});
+	
+    //监听提交
+    $('#sendbtn').click(function(){
+        form.on('submit(apply)', function(data){
+            // console.log(data.field);
+            $.ajax({
+                url: '/pub.html?c=save',
+                type: 'post',
+                dataType: 'json',
+                data: data.field,
+                success:function (res) {
+					// console.log(res);
+                    if (res.code == 0) {
+                        layer.msg(res.msg);
+                        setTimeout(function(){window.location.href='/pub.html?appid=您的小程序appid';},1200);
+                    } else {
+                        layer.msg(res.msg)
+                    }
+                }
+            })
+            return false;
+        });
+    })
+});
+</script>
+</body>
+</html>
