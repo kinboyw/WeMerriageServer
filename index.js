@@ -14,10 +14,11 @@ var Table_SLIDE = "slide";var Slide = new DataTable({resourceName:Table_SLIDE});
 var app = express();
 
 var _req,_res;
-app.get('/',(req,res)=>{
+app.get('/api',(req,res)=>{
   res.status(200).send('hello world')
 })
-app.get('/api', async (req, res, next) => {
+
+app.get('/', async (req, res, next) => {
   _req = req; _res = res
   var c = req.query.c
   var appid = req.query.appid
@@ -43,7 +44,6 @@ async function infoHandler(maininfo){
   var chatList = await getSendList()
   var zanList = await getZanList()
   var slideList = await getSlideList(maininfo)
-  console.log(slideList)
   data = {
     maininfo:maininfo,
     zanLog:zanList,
@@ -136,7 +136,6 @@ async function signHandler(maininfo){
     success = true
     msg="留言发送成功！"
   }).catch(e=>{
-    console.log(e)
     success = false
     msg = "服务器故障,发送失败" 
   })
