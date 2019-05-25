@@ -14,6 +14,9 @@ var Table_SLIDE = "slide";var Slide = new DataTable({resourceName:Table_SLIDE});
 var app = express();
 
 var _req,_res;
+app.get('/',(req,res)=>{
+  res.status(200).send('hello world')
+})
 app.get('/api', async (req, res, next) => {
   _req = req; _res = res
   var c = req.query.c
