@@ -45,7 +45,7 @@ async function infoHandler(maininfo){
   var zanList = await getZanList()
   var slideList = await getSlideList(maininfo)
   data = {
-    maininfo:maininfo,
+    mainInfo:maininfo,
     zanLog:zanList,
     zanNum:zanList.length,
     slideList:slideList,
