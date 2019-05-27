@@ -97,7 +97,7 @@ async function zanHandler(maininfo){
   var success = false;
   var msg = "";
   var zanList = await getZanList()
-  var flag = zanList.some((item)=>{return item.userid === maininfo.userid})
+  var flag = zanList.some((item)=>{return item.userid === maininfo.userid && item.nickname === maininfo.nickname})
   if(flag){
     return { success : false, msg : "您已送出祝福了！" }
   }
