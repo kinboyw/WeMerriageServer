@@ -13,6 +13,7 @@ var Table_SLIDE = "slide";var Slide = new DataTable({resourceName:Table_SLIDE});
 
 var app = express();
 
+app.use('/images',express.static('images'))
 var _req,_res;
 app.get('/api',(req,res)=>{
   res.status(200).send('hello world')
