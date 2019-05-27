@@ -99,7 +99,7 @@ async function zanHandler(maininfo){
   var zanList = await getZanList()
   var flag = zanList.some((item)=>{return item.userid === maininfo.userid && item.nickname === maininfo.nickname})
   if(flag){
-    return { success : false, msg : "您已送出祝福了！" }
+    return { success : false, msg : "您已送过祝福了！" }
   }
 
   var data = {
