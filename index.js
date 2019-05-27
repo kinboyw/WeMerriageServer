@@ -109,8 +109,13 @@ async function zanHandler(maininfo){
     time: m1 + " " + m2.split(':')[0] + "时" +m2.split(':')[1] + "分"
   }
 /*   console.log("saving zan:",data) */
-  await Zan.save(data).then(obj=>{success = true;msg = "您已送出祝福了！"}).catch(e=>{success = false;msg = e})
-  return {success:success,msg:msg}
+  await Zan.save(data).then(obj=>{
+    success = true;
+    msg = "您已送出祝福了！";
+  }).catch(e=>{success = false;msg = e})
+  var zanLog = await getZanList()
+  var zanNum = zanlog.length
+  return { success: success, msg: msg, zanLog = zanLog, zanNum = zanNum }
 }
 
 async function getZanList(){
