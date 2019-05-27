@@ -114,7 +114,7 @@ async function zanHandler(maininfo){
     msg = "您已送出祝福了！";
   }).catch(e=>{success = false;msg = e})
   var zanLog = await getZanList()
-  var zanNum = zanlog.length
+  var zanNum = zanLog.length
   return { success: success, msg: msg, zanLog : zanLog, zanNum : zanNum }
 }
 
