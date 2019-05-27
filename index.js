@@ -115,7 +115,7 @@ async function zanHandler(maininfo){
   }).catch(e=>{success = false;msg = e})
   var zanLog = await getZanList()
   var zanNum = zanlog.length
-  return { success: success, msg: msg, zanLog = zanLog, zanNum = zanNum }
+  return { success: success, msg: msg, zanLog : zanLog, zanNum : zanNum }
 }
 
 async function getZanList(){
