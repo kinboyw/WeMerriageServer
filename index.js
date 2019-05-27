@@ -15,11 +15,11 @@ var app = express();
 
 app.use('/images',express.static('images'))
 var _req,_res;
-app.get('/api',(req,res)=>{
+app.get('/',(req,res)=>{
   res.status(200).send('hello world')
 })
 
-app.get('/', async (req, res, next) => {
+app.get('/api', async (req, res, next) => {
   _req = req; _res = res
   var c = req.query.c
   var appid = req.query.appid
