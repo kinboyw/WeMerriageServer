@@ -83,8 +83,8 @@ async function sendHandler(maininfo){
   await Send.save({
     appid:_req.query.appid,
     userid:maininfo.userid,
-    nickname:_req.query.nickname,
-    face:_req.query.face,
+    nickname:_req.query.nickname === undefined ? "撒花~":_req.query.nickname,
+    face:_req.query.face === undefined ? "http://cdn.kinboy.wang/welove/images/default-min.jpg":_req.query.face,
     words:_req.query.words,
     time: m1 + " " + m2.split(':')[0] + "时" +m2.split(':')[1] + "分"
   }).then(obj=>{success = true;msg = "留言发送成功！"}).catch(e=>{success = false;msg = e})
