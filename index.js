@@ -168,7 +168,7 @@ async function getSignList(){
 async function getSlideList(maininfo){
   return await Slide.fetch().then(res=>{
     return res.map(item=>item.attributes).filter((item)=>{return item.userid === maininfo.userid})
-  })
+  }).catch(e=>{console.log(e);return []})
 }
 
 app.listen(process.env.LEANCLOUD_APP_PORT,()=>{
