@@ -25,7 +25,17 @@ app.get('/api', async (req, res, next) => {
   var appid = req.query.appid
   var maininfo = await getMainInfo(appid)
 
+  if(!maininfo){
+    res.status(500).send(`{success: false, msg: "服务器内部错误！"}`)
+    return
+  }
+
   var flag = await appidCheck(appid)
+
+  if(flag === null){
+    res.status(500).send(`{success: false, msg: "服务器内部错误！"}`)
+    return
+  }
   if(!flag){
     res.status(200).send(`{success: false, msg: "未检测到此小程序配置！"}`)
     return
@@ -38,6 +48,7 @@ app.get('/api', async (req, res, next) => {
     case "sign": _res.status(200).send(await signHandler(maininfo));break;
     default:_res.status(200).send(await infoHandler(maininfo));break;
   }
+  return
 })
 
 
@@ -61,7 +72,7 @@ async function getMainInfo(appid){
   return await Info.fetch().then(res=>{
     var attr = res.map(item=>item.attributes)
     return attr.find(item=>item.appid === appid)
-  })
+  }).catch(e=>{console.log(e);return null})
 }
 
 async function sendHandler(maininfo){
@@ -89,7 +100,7 @@ async function sendHandler(maininfo){
 async function getSendList(){
   return Send.fetch().then(res=>{
     return res.map(item=>item.attributes)
-  })
+  }).catch(e=>{console.log(e);return []})
 }
 
 async function zanHandler(maininfo){
@@ -122,7 +133,7 @@ async function zanHandler(maininfo){
 async function getZanList(){
   return await Zan.fetch().then(res=>{
     return res.map(item=>item.attributes)
-  })
+  }).catch(e=>{console.log(e);return []})
 }
 
 async function signHandler(maininfo){
@@ -151,7 +162,7 @@ async function signHandler(maininfo){
 async function getSignList(){
   return await Sign.fetch().then(res=>{
     return res.map(item=>item.attributes)
-  })
+  }).catch(e=>{console.log(e);return []})
 }
 
 async function getSlideList(maininfo){
@@ -175,5 +186,5 @@ async function appidCheck(id){
       }else{
         return false
       }
-    })
+    }).catch(e=>{console.log(e);return null})
 }
