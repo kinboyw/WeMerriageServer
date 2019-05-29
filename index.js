@@ -26,7 +26,7 @@ app.get('/api', async (req, res, next) => {
   var maininfo = await getMainInfo(appid)
 
   if(!maininfo){
-    res.status(500).send(`{success: false, msg: "服务器内部错误！"}`)
+    res.status(200).send(`{success: false, msg: "未检测到此小程序配置！"}`)
     return
   }
 
@@ -53,8 +53,8 @@ app.get('/api', async (req, res, next) => {
 
 
 async function infoHandler(maininfo){ 
-  var chatList = await getSendList()
-  var zanList = await getZanList()
+  var chatList = await getSendList(maininfo)
+  var zanList = await getZanList(maininfo)
   var slideList = await getSlideList(maininfo)
   data = {
     mainInfo:maininfo,
@@ -70,8 +70,7 @@ async function infoHandler(maininfo){
 }
 async function getMainInfo(appid){
   return await Info.fetch().then(res=>{
-    var attr = res.map(item=>item.attributes)
-    return attr.find(item=>item.appid === appid)
+    return res.map(item=>item.attributes).find(item=>{return item.appid === appid})
   }).catch(e=>{console.log(e);return null})
 }
 
@@ -89,7 +88,7 @@ async function sendHandler(maininfo){
     time: m1 + " " + m2.split(':')[0] + "时" +m2.split(':')[1] + "分"
   }).then(obj=>{success = true;msg = "留言发送成功！"}).catch(e=>{success = false;msg = e})
   
-    var chatList = await getSendList()
+    var chatList = await getSendList(maininfo)
     return {
       success: success,
       msg: msg,
@@ -97,9 +96,9 @@ async function sendHandler(maininfo){
       chatNum: chatList.length
     }
 }
-async function getSendList(){
-  return Send.fetch().then(res=>{
-    return res.map(item=>item.attributes)
+async function getSendList(maininfo){
+  return await Send.fetch().then(res=>{
+    return res.map(item=>item.attributes).filter(item=>{return item.userid === maininfo.userid})
   }).catch(e=>{console.log(e);return []})
 }
 
@@ -108,7 +107,7 @@ async function zanHandler(maininfo){
   var m2 = moment().format('LT')
   var success = false;
   var msg = "";
-  var zanList = await getZanList()
+  var zanList = await getZanList(maininfo)
   var flag = zanList.some((item)=>{return item.userid === maininfo.userid && item.nickname === _req.query.nickname})
   if(flag){
     return { success : false, msg : "您已送过祝福了！" }
@@ -130,9 +129,9 @@ async function zanHandler(maininfo){
   return { success: success, msg: msg, zanLog : zanLog, zanNum : zanNum }
 }
 
-async function getZanList(){
+async function getZanList(maininfo){
   return await Zan.fetch().then(res=>{
-    return res.map(item=>item.attributes)
+    return res.map(item=>item.attributes).filter(item=>{return item.userid === maininfo.userid})
   }).catch(e=>{console.log(e);return []})
 }
 
@@ -159,9 +158,9 @@ async function signHandler(maininfo){
   return {success:success,msg:msg}
 }
 
-async function getSignList(){
+async function getSignList(maininfo){
   return await Sign.fetch().then(res=>{
-    return res.map(item=>item.attributes)
+    return res.map(item => item.attributes).filter(item => {return item.userid === maininfo.userid })
   }).catch(e=>{console.log(e);return []})
 }
 
@@ -179,8 +178,7 @@ app.listen(process.env.LEANCLOUD_APP_PORT,()=>{
 async function appidCheck(id){
   return await Code.fetch().then(
     (res) => {
-      var attr = res.map(iterm => iterm.attributes)
-      var flag = attr.some((one)=>{return one.appid === id})
+      var flag = res.map(iterm => iterm.attributes).some((one)=>{return one.appid === id})
       if (id !== undefined && flag) {
         return true
       }else{
